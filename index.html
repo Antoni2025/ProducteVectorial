@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joc de Productes Vectorials</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        img.logo {
+            max-width: 200px; /* Ajusta la mida del logo segons les teves necessitats */
+            height: auto;
+            display: block;
+            margin: 0 auto 20px auto; /* Centra el logo i afegeix espai inferior */
+        }
+        img.vector {
+            max-width: 20%; /* Ajusta la mida de la imatge del vector */
+            height: auto;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <img src="aulauniversitaria.png" alt="Logo Aula Universitària" class="logo">
+    <h2>Endevina la Direcció i Sentit del Vector Resultant</h2>
+    <div id="game">
+        <p>Producte vectorial del <span class="red">vector vermell</span> pel <span class="green">vector verd</span></p>
+        <img id="vectorImage" src="" alt="Imatge del producte vectorial" class="vector">
+        <div>
+            <select id="directionOptions">
+                <option value="x+">x+</option>
+                <option value="x-">x-</option>
+                <option value="y+">y+</option>
+                <option value="y-">y-</option>
+                <option value="z+">z+</option>
+                <option value="z-">z-</option>
+            </select>
+            <button onclick="checkAnswer()">Comprova</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const vectors = [
+            { image: "1.png", direction: "z+" },
+            { image: "2.png", direction: "z-" },
+            { image: "3.png", direction: "y-" },
+            { image: "4.png", direction: "y+" },
+            { image: "5.png", direction: "z+" },
+            { image: "6.png", direction: "z-" },
+			{ image: "7.png", direction: "x+" },
+            { image: "8.png", direction: "x-" },
+            { image: "9.png", direction: "z-" },
+            { image: "10.png", direction: "z+" },
+            { image: "11.png", direction: "y+" },
+            { image: "12.png", direction: "y-" },
+			{ image: "13.png", direction: "z+" },
+            { image: "14.png", direction: "z-" },
+            { image: "15.png", direction: "x+" },
+            { image: "16.png", direction: "x-" },
+            { image: "17.png", direction: "y+" },
+            { image: "18.png", direction: "y-" },
+			{ image: "19.png", direction: "y-" },
+            { image: "20.png", direction: "x+" },
+            { image: "21.png", direction: "y-" },
+            { image: "22.png", direction: "x+" },
+            { image: "23.png", direction: "y+" },
+            { image: "24.png", direction: "x-" },
+
+        ];
+
+        function getRandomVector() {
+            const randomIndex = Math.floor(Math.random() * vectors.length);
+            return vectors[randomIndex];
+        }
+
+        function loadGame() {
+            const vector = getRandomVector();
+            document.getElementById('vectorImage').src = vector.image;
+            document.getElementById('vectorImage').alt = `Imatge del producte vectorial ${vector.image}`;
+            document.getElementById('vectorImage').dataset.direction = vector.direction;
+            document.getElementById('result').innerText = '';
+        }
+
+        function checkAnswer() {
+            const selectedDirection = document.getElementById('directionOptions').value;
+            const correctDirection = document.getElementById('vectorImage').dataset.direction;
+            const resultDiv = document.getElementById('result');
+
+            if (selectedDirection === correctDirection) {
+                resultDiv.innerText = "Correcte! Felicitats!";
+            } else {
+                resultDiv.innerText = `Incorrecte. La resposta correcta és ${correctDirection}.`;
+            }
+
+            setTimeout(loadGame, 2000); // Reinicia el joc després de 2 segons
+        }
+
+        window.onload = loadGame;
+    </script>
+</body>
+</html>
