@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -18,7 +17,7 @@
             margin: 0 auto 20px auto; /* Centra el logo i afegeix espai inferior */
         }
         img.vector {
-            max-width: 60%; /* Ajusta la mida de la imatge del vector */
+            max-width: 75%; /* Ajusta la mida de la imatge del vector */
             height: auto;
         }
         .result {
@@ -31,6 +30,9 @@
         .green {
             color: green;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -39,7 +41,7 @@
     <div id="game">
         <p>Producte vectorial del <span class="red">vector vermell</span> pel <span class="green">vector verd</span></p>
         <img id="vectorImage" src="" alt="Imatge del producte vectorial" class="vector">
-        <div>
+        <div id="controls">
             <select id="directionOptions">
                 <option value="x+">x+</option>
                 <option value="x-">x-</option>
@@ -51,9 +53,11 @@
             <button onclick="checkAnswer()">Comprova</button>
         </div>
         <div class="result" id="result"></div>
+        <div class="counter" id="counter">Arriba a 15 encerts: 0</div>
     </div>
-    <p>Aula Universitària 2025</p>
-	
+    
+    <p>Aula Universitària 2025</p>    
+
     <script>
         const vectors = [
             { image: "1.png", direction: "z+" },
@@ -62,26 +66,27 @@
             { image: "4.png", direction: "y+" },
             { image: "5.png", direction: "z+" },
             { image: "6.png", direction: "z-" },
-	    { image: "7.png", direction: "x+" },
+            { image: "7.png", direction: "x+" },
             { image: "8.png", direction: "x-" },
             { image: "9.png", direction: "z-" },
             { image: "10.png", direction: "z+" },
             { image: "11.png", direction: "y+" },
             { image: "12.png", direction: "y-" },
-	    { image: "13.png", direction: "z+" },
+            { image: "13.png", direction: "z+" },
             { image: "14.png", direction: "z-" },
             { image: "15.png", direction: "x+" },
             { image: "16.png", direction: "x-" },
             { image: "17.png", direction: "y+" },
             { image: "18.png", direction: "y-" },
-	    { image: "19.png", direction: "y-" },
+            { image: "19.png", direction: "y-" },
             { image: "20.png", direction: "x+" },
             { image: "21.png", direction: "y-" },
             { image: "22.png", direction: "x+" },
             { image: "23.png", direction: "y+" },
             { image: "24.png", direction: "x-" },
-
         ];
+
+        let correctStreak = 0;
 
         function getRandomVector() {
             const randomIndex = Math.floor(Math.random() * vectors.length);
@@ -100,14 +105,27 @@
             const selectedDirection = document.getElementById('directionOptions').value;
             const correctDirection = document.getElementById('vectorImage').dataset.direction;
             const resultDiv = document.getElementById('result');
+            const counterDiv = document.getElementById('counter');
+            const controlsDiv = document.getElementById('controls');
 
             if (selectedDirection === correctDirection) {
+                correctStreak++;
                 resultDiv.innerText = "Correcte! Felicitats!";
+                counterDiv.innerText = `Encerts seguits: ${correctStreak}`;
+                if (correctStreak === 15) {
+                    document.getElementById('vectorImage').src = "Lluisa.png";
+                    resultDiv.innerText = "Estic orgullós de tu!";
+                    counterDiv.innerText = '';
+                    controlsDiv.classList.add('hidden'); // Amaga el botó i les opcions
+                } else {
+                    setTimeout(loadGame, 2000); // Reinicia el joc després de 2 segons
+                }
             } else {
+                correctStreak = 0;
                 resultDiv.innerText = `Incorrecte. La resposta correcta és ${correctDirection}.`;
+                counterDiv.innerText = `Encerts seguits: ${correctStreak}`;
+                setTimeout(loadGame, 2000); // Reinicia el joc després de 2 segons
             }
-
-            setTimeout(loadGame, 2000); // Reinicia el joc després de 2 segons
         }
 
         window.onload = loadGame;
